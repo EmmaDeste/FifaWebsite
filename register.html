@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<htmllang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		<title> Login Form </title>
+		
+		<link rel="stylesheet" href="menu.css">
+		<script src="runRegister.js"> </script>
+	</head>
+
+	<body>
+		<form> 
+			
+			<h1> Identity </h1>
+			
+			<label for="name"> Enter your <b> name </b>: </label>
+			<input  id="name"  onchange = "setLastUsed('name')"> <!-- call setLastUsed function when the text input is changed -->
+			
+			<br>
+			<br>
+			
+			<label for="surname"> Enter your <b> surname </b>: </label>
+			<input  id="surname"  onchange = "setLastUsed('surname')">
+			
+			<br>
+			<br>
+			
+			<label for="age"> Enter your <b> age </b>: </label>
+			<input  id="age"  onchange = "setLastUsed('age')">
+			
+			<br>
+			<br>
+			
+			
+			<label for="gender"> Select your <b> gender </b>: </label>
+			<select id="gender">
+				<option> Male </option>
+				<option> Female </option>
+				<option> Other </option>
+
+			</select>
+			
+			<br>
+			<br>
+			
+			<label for="education"> Select your <b> level of education </b>: </label>
+			<select id="education">
+	
+				<option> Diplomas </option>
+				<option> BTech </option>
+				<option> Honors </option>
+				<option> Master </option>
+				<option> PHD </option>
+
+			</select>
+			
+			<br>
+			<br>
+			
+			<label for="citizenship"> Select your <b> citizenship </b>: </label>
+			<select id="citizenship">
+	
+				<option> Angolan </option>
+				<option> Comoros </option>
+				<option> Egyptian </option>
+				<option> English </option>
+				<option> Ethiopian </option>
+				<option> French </option>
+				<option> Madagascan </option>
+				<option> Motswana </option>
+				<option> Nama </option>
+				<option selected> South African </option>
+				<option> Zimbabwean </option>
+				<!-- selected is used to select to default value -->
+
+			</select>
+			
+			<br>
+			<br>
+			
+			<label for="country"> Select your <b> country of origin:</b> </label>
+			<select id="country">
+	
+				<option> Angola </option>
+				<option> Botswana </option>
+				<option> Comoros </option>
+				<option> Egyptian </option>
+				<option> Ethiopian </option>
+				<option> France </option>
+				<option> Madagascar </option>
+				<option> Namibia </option>
+				<option selected> South Africa </option>
+				<option> United Kingdom </option>
+				<option> Zimbabwe </option>
+
+			</select>
+		
+		</form>
+		
+		<br>
+		
+		<input type = "button" id="submitButton"
+		onclick = "verifyAndSubmit()"
+		value = "SUBMIT" >
+		
+		<br>
+		
+		<input type = "button" id="deleteButton" 
+		onclick = "deleteLine()"
+		value = "DELETE" > <!-- to delete info one by one - where the cursor is -->
+		
+		<br>
+		
+		<input type = "button" id="cancelButton" 
+		onclick = "cancelForm()"
+		value = "CANCEL" > <!-- to delete all the info -->
+		
+		
+		<p> <a href="login.html"> Log out </a> </p>
+		
+		
+		
+		<p> Display the database content here: 
+			<input type="button" id="listButton"
+			onclick = "listAll()"
+			value = "LIST users" > 
+		</p>
+		
+		
+		
+		<textarea readonly id="allPeopleArea" >   -- users --
+		</textarea> <!-- rows="20" cols="20" -->
+	
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

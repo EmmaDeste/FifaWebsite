@@ -1,0 +1,161 @@
+<Html> <!-- This tag is compulsory for any HTML document. -->   
+<Head>  
+<!-- based on 
+https://ricardometring.com/getting-the-value-of-a-select-in-javascript
+https://linuxhint.com/take-input-radio-buttons-javascript/
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+https://developer.mozilla.org/fr/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage
+https://developer.mozilla.org/en-US/docs/Web/API/IDBCursor
+https://web.dev/indexeddb/
+-->  
+
+<style>
+<!-- CSS part -->  
+
+</style>
+</Head>  
+
+<Body>
+<!-- html part -->
+
+<select id="country" onChange="update_country()">
+	
+	<option value="fr">France</option>
+	<option value="uk">United Kingdom</option>
+	<option value="za" selected >South Africa</option>
+<!-- selected indicates the default value -->
+
+</select>
+
+<div id = "sex" onChange="update_sex()">
+	<input type="radio" id="male_choice"
+		name="sex" value="male">
+	<label for="male_choice">Male</label>
+
+	<input type="radio" id="female_choice"
+		name="sex" value="female">
+	<label for="female_choice">Female</label>
+
+	<input type="radio" id="other_choice"
+		name="sex" value="other">
+	<label for="other_choice">Other</label>
+</div>
+
+<input type="button" id="submit_button"
+	onclick="submit_form()"
+	value="Submit">
+<br></br>
+<input type="text"   id="initials">
+<input type="text"   id="full_name">
+<input type="text"   id="declared_sex">
+<br></br>
+<input type="button" id="list_all_button"
+	onClick = list_all()
+	value=    'List everybody'>
+
+<script>
+<!-- javascript part -->
+	let my_db; //Please note that our database will be named EmmaDB and store (=table) will be named 'people'
+
+	function get_sex() {
+		const radioButtons= document.querySelectorAll('input[name="sex"]');
+		let	selectedValue;
+		for (const rb of radioButtons) {
+			if (rb.checked) {
+				selectedValue = rb.value;
+				break;
+		     }
+		}
+		return(selectedValue);
+	}
+
+	function get_country_initials() {
+		var select = document.getElementById('country');
+		var the_initials = select.options[select.selectedIndex].value;
+		return(the_initials);
+	}
+
+	function get_country_name() {
+		var select = document.getElementById('country');
+		var the_text = select.options[select.selectedIndex].text;
+		return(the_text);
+	}
+
+	function update_country() {
+		document.getElementById('initials').value = get_country_initials();
+		document.getElementById('full_name').value = get_country_name();
+	}
+
+	function update_sex() {
+		document.getElementById('declared_sex').value = get_sex() ;
+	}
+
+	function submit_form() {
+		const transaction = my_db.transaction(["people"], "readwrite"); <!-- read et write sur l'onglet people -->
+		transaction.oncomplete = (event) => {
+  			console.log("Transaction completed: database modification finished.");
+		};
+		transaction.onerror = (event) => {
+ 			console.log("Insert in store error");
+		};
+		
+		let newItem = { country: get_country_name(), sex: get_sex() };<!-- création et définition de l'objet de la nouvelle ligne à écrire dans l'onglet, sous forme de dictionnaire -->
+		let action = transaction.objectStore('people'); <!-- pourquoi redéfinir sur quel onglet agir? spécifier sur quel onglet taper-->
+		var request = action.add(newItem); 
+
+		request.onsuccess = function() {
+			console.log('One people added');
+		  };
+	}
+
+	function list_all () {
+		console.log('List all requested');
+		const transaction = my_db.transaction(['people'], "readonly");  <!-- readonly, pas de modifs dans l'onglet people, il peut traiter en parallèle même si plusieurs transactions simultanément -->
+		const objectStore = transaction.objectStore('people'); <!-- people est le nom de l' objectStore (équivalent SQL d'une table), 1 line = 1 object -->
+
+		objectStore.openCursor().onsuccess = (event) => { <!-- lire en séquence dans la base de donnée, onsuccess pour pas faire d'actions erronnées -->
+   			const cursor = event.target.result; <!-- résultat de l'évènement -->
+    			if (cursor) { <!-- est-ce que le pointeur est encore sur quelque chose ou arrivé à la fin de la bdd -->
+      			console.log(cursor.value.country, cursor.value.sex);
+	     		cursor.continue(); <!-- fin de la lecture de ligne, rappeler la fonction pour lire la ligne suivante (qui correspond à la personne suivante, record suivant) -->
+			} else {
+				console.log('Everybody has been shown.');
+			}
+	  	};
+	}
+	
+	<!-- executer une unique fois quand la page est lancée-->
+
+	const request = indexedDB.open("EmmaDB", 1); <!-- version 1 de la base de donnée -->
+	
+	request.onupgradeneeded = (event) => { <!-- traitement de la base de donnée si elle n'existe pas déjà, soit création car pas d'update du formulaire HTML (exemple langue parlée)-->
+  	const db = event.target.result;
+	// Only use when the peole store (=table) does not exist or has an older version
+	// Create an objectStore for this database
+	const objectStore = db.createObjectStore("people", { keyPath: 'clef', autoIncrement: true });
+	console.log("people created using idb");
+	};
+	
+	
+	request.onerror = (event) => {<!-- si erreur -->
+		console.error("Why didn't you allow my web app to use IndexedDB?");
+	};
+	
+
+	request.onsuccess = (event) => {<!-- si fonctionne -->
+		my_db = event.target.result; <!-- resultat de l'ouverture de la base données -> object qui permet de dialoguer avec la base de données, open peut être long -->
+		console.log("Connected to people database");
+	};
+
+
+	update_country();
+	update_sex();
+
+	window.addEventListener("load", () => {
+		console.log("Page is fully loaded!");
+	});
+
+</script>
+</Body>
+
+</Html>  

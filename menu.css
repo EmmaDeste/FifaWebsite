@@ -1,0 +1,108 @@
+.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.centerimg{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img{
+	border-radius: 30px;
+	box-shadow: 3px 3px;
+}
+
+img:hover{
+	filter: saturate(7);
+}
+
+.centertable{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+body{
+	text-align : center;
+	background-color: #C0DFEF; /* IMPORTANT: white and blue backgrounds look smart */
+	font-size: 150%;
+}
+
+h1{
+	color: green;
+}
+
+h2{
+	color: white;
+}
+
+
+p{
+	text-align : center;
+	text-justify : justify; /* IMPORTANT: justify the text */
+	margin: 20px;
+	
+	color:black;
+	font-size: 18px; /* IMPORTANT: text enough big to see clearly */
+	
+	font-size: 18px; /* IMPORTANT: not too large margins */
+}
+
+.redfont{
+	color: red;
+}
+
+.h1Login{
+	color: white;
+}
+
+#loginForm{
+	font-size: 250%;
+}
+
+.ptable{
+	color: black;
+}
+
+table{
+	font-size: 20px;
+}
+
+th{
+	background-color: white;
+}
+
+
+/* BACKGROUND IMAGES */
+
+.divBalls{
+	background-image: url("football.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.divLogin{
+	background-image: url("loginLock.jpeg");
+	background-size: 1500px 600px;
+	background-repeat: no-repeat;
+
+}
+
+
+/* NEW FEATURES: color the different teams while mouse is over */
+
+#br:hover, #ger:hover, #fr:hover, #sp:hover, #ar:hover, #en:hover { 
+	color: purple;
+	font-weight: bold;
+}
+
+
+#loginFormSubmit:hover, #listButton:hover, #goToMenu:hover, #submitButton:hover, #deleteButton:hover, #cancelButton:hover {
+		background-color: orange;
+		color: white;
+}
+
+
+
